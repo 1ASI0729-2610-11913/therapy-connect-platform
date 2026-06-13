@@ -1,5 +1,6 @@
 package com.open.therapyconnect.platform.scheduling.infrastructure.persistence.jpa.entities;
 
+import com.open.therapyconnect.platform.scheduling.domain.model.valueobjects.SessionStatus;
 import com.open.therapyconnect.platform.shared.infrastructure.persistence.jpa.entities.AuditableAbstractPersistenceEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,8 +32,9 @@ public class SessionPersistenceEntity extends AuditableAbstractPersistenceEntity
     @Column(nullable = false)
     private String sessionType;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String sessionStatus;
+    private SessionStatus sessionStatus;
 
     private Long teacherId;
 

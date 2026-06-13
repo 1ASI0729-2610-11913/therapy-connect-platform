@@ -1,6 +1,7 @@
 package com.open.therapyconnect.platform.scheduling.domain.model.aggregates;
 
 import com.open.therapyconnect.platform.scheduling.domain.model.commands.CreateSessionCommand;
+import com.open.therapyconnect.platform.scheduling.domain.model.valueobjects.SessionStatus;
 import com.open.therapyconnect.platform.shared.domain.model.aggregates.AbstractDomainAggregateRoot;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class Session extends AbstractDomainAggregateRoot<Session> {
     @Setter private String startTime;
     @Setter private String endTime;
     @Setter private String sessionType;
-    @Setter private String sessionStatus;
+    @Setter private SessionStatus sessionStatus;
     @Setter private Long teacherId;
     @Setter private Long studentId;
 
@@ -28,7 +29,7 @@ public class Session extends AbstractDomainAggregateRoot<Session> {
         this.startTime = Strings.EMPTY;
         this.endTime = Strings.EMPTY;
         this.sessionType = Strings.EMPTY;
-        this.sessionStatus = "pending";
+        this.sessionStatus = SessionStatus.PENDING;
     }
 
     public Session(CreateSessionCommand command) {
@@ -37,7 +38,7 @@ public class Session extends AbstractDomainAggregateRoot<Session> {
         this.startTime = command.startTime();
         this.endTime = command.endTime();
         this.sessionType = command.sessionType();
-        this.sessionStatus = "pending";
+        this.sessionStatus = SessionStatus.PENDING;
         this.teacherId = command.teacherId();
         this.studentId = command.studentId();
     }
@@ -51,7 +52,7 @@ public class Session extends AbstractDomainAggregateRoot<Session> {
         return this;
     }
 
-    public Session updateStatus(String status) {
+    public Session updateStatus(SessionStatus status) {
         this.sessionStatus = status;
         return this;
     }

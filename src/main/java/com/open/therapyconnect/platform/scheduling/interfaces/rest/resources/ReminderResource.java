@@ -1,6 +1,7 @@
 package com.open.therapyconnect.platform.scheduling.interfaces.rest.resources;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.open.therapyconnect.platform.scheduling.domain.model.valueobjects.ReminderStatus;
 
 /**
  * Reminder response resource.
@@ -20,7 +21,7 @@ public record ReminderResource(
         String reminderTime,
 
         @Schema(description = "Reminder status", example = "pending")
-        String reminderStatus,
+        ReminderStatus reminderStatus,
 
         @Schema(description = "Associated session ID", example = "1")
         Long sessionId

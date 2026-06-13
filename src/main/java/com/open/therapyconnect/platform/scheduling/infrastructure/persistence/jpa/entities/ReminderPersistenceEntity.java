@@ -1,5 +1,8 @@
 package com.open.therapyconnect.platform.scheduling.infrastructure.persistence.jpa.entities;
 
+import com.open.therapyconnect.platform.scheduling.domain.model.valueobjects.ReminderStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import com.open.therapyconnect.platform.shared.infrastructure.persistence.jpa.entities.AuditableAbstractPersistenceEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,7 +29,8 @@ public class ReminderPersistenceEntity extends AuditableAbstractPersistenceEntit
     private String reminderTime;
 
     @Column(nullable = false)
-    private String reminderStatus;
+    @Enumerated(EnumType.STRING)
+    private ReminderStatus reminderStatus;
 
     private Long sessionId;
 }

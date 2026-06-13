@@ -1,5 +1,6 @@
 package com.open.therapyconnect.platform.scheduling.interfaces.rest;
 
+import com.open.therapyconnect.platform.scheduling.domain.model.valueobjects.SessionStatus;
 import com.open.therapyconnect.platform.scheduling.application.commandservices.SessionCommandService;
 import com.open.therapyconnect.platform.scheduling.application.queryservices.SessionQueryService;
 import com.open.therapyconnect.platform.scheduling.domain.model.commands.DeleteSessionCommand;
@@ -88,7 +89,7 @@ public class SessionsController {
     @PatchMapping("/{sessionId}/status")
     @Operation(summary = "Update session status")
     public ResponseEntity<?> updateSessionStatus(@PathVariable Long sessionId, @RequestBody UpdateSessionStatusResource resource) {
-        var command = new UpdateSessionStatusCommand(sessionId, resource.status());
+        var command = new UpdateSessionStatusCommand(sessionId, SessionStatus.valueOf(resource.status().toUpperCase()));
         var result = sessionCommandService.handle(command);
         return ResponseEntityAssembler.toResponseEntityFromResult(
                 result,
