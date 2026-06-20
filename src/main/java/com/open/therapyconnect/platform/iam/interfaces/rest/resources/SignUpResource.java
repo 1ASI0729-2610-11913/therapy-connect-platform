@@ -9,7 +9,7 @@ import java.util.List;
 @Schema(
     name = "SignUpRequest",
     description = "User sign-up request with credentials and roles",
-    example = "{\"username\": \"john.doe\", \"password\": \"SecurePass123!\", \"roles\": [\"ROLE_USER\"]}"
+    example = "{\"username\": \"john.doe\", \"password\": \"SecurePass123!\", \"roles\": [\"ROLE_PARENT_PERSONAL\"]}"
 )
 public record SignUpResource(
     @Schema(
@@ -29,8 +29,9 @@ public record SignUpResource(
     String password,
 
     @Schema(
-        description = "Roles to assign to the user",
-        example = "[\"ROLE_USER\"]"
+        description = "Roles to assign to the user. Valid values: ROLE_PARENT_PERSONAL, ROLE_PARENT_INSTITUTIONAL, ROLE_TEACHER_PERSONAL, ROLE_TEACHER_INSTITUTIONAL, ROLE_INSTITUTION_ADMIN",
+        example = "[\"ROLE_PARENT_PERSONAL\"]",
+        allowableValues = {"ROLE_PARENT_PERSONAL", "ROLE_PARENT_INSTITUTIONAL", "ROLE_TEACHER_PERSONAL", "ROLE_TEACHER_INSTITUTIONAL", "ROLE_INSTITUTION_ADMIN"}
     )
     List<String> roles
 ) {

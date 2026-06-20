@@ -8,13 +8,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(
     name = "RoleResponse",
     description = "Role information response",
-    example = "{\"id\": 1, \"name\": \"ROLE_USER\"}"
+    example = "{\"id\": 1, \"name\": \"ROLE_PARENT_PERSONAL\"}"
 )
 public record RoleResource(
     @Schema(description = "Role unique identifier", example = "1")
     Long id,
 
-    @Schema(description = "Role name", example = "ROLE_USER", allowableValues = {"ROLE_USER", "ROLE_INSTRUCTOR", "ROLE_ADMIN"})
+    @Schema(description = "Role name", example = "ROLE_PARENT_PERSONAL", allowableValues = {"ROLE_PARENT_PERSONAL", "ROLE_PARENT_INSTITUTIONAL", "ROLE_TEACHER_PERSONAL", "ROLE_TEACHER_INSTITUTIONAL", "ROLE_INSTITUTION_ADMIN"})
     String name
 ) {
 }

@@ -15,6 +15,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "teacher_notes")
 @PrimaryKeyJoinColumn(name = "note_id")
+@DiscriminatorValue("TEACHER_NOTE")
 @Getter
 @Setter
 @NoArgsConstructor
