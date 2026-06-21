@@ -4,19 +4,16 @@ import com.open.therapyconnect.platform.marketplace.domain.model.aggregates.Prod
 import com.open.therapyconnect.platform.marketplace.interfaces.rest.resources.ProductResource;
 
 public class ProductResourceFromEntityAssembler {
-    public static ProductResource toResourceFromEntity(Product entity) {
+
+    public static ProductResource toResourceFromEntity(Product product) {
         return new ProductResource(
-                entity.getId(),
-                entity.getProductName(),
-                entity.getProductCategory(),
-                entity.getProductType(),
-                entity.getAvailabilityState().name(),
-                entity.getAvailableQuantity(),
-                entity.getRecommendationState().name(),
-                entity.getPriority().name(),
-                entity.getExpirationDate(),
-                entity.getGroupType(),
-                entity.getPrice()
+                product.getId(),
+                product.getCatalogId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getImageUrl(),
+                product.getRecommendedFor()
         );
     }
 }

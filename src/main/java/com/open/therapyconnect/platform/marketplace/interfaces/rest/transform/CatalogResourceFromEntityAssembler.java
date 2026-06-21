@@ -4,13 +4,12 @@ import com.open.therapyconnect.platform.marketplace.domain.model.aggregates.Cata
 import com.open.therapyconnect.platform.marketplace.interfaces.rest.resources.CatalogResource;
 
 public class CatalogResourceFromEntityAssembler {
-    public static CatalogResource toResourceFromEntity(Catalog entity) {
+
+    public static CatalogResource toResourceFromEntity(Catalog catalog) {
         return new CatalogResource(
-                entity.getId(),
-                entity.getCatalogName(),
-                entity.getProductId().value(),
-                entity.getCatalogState().name(),
-                entity.getDateUpdated()
+                catalog.getId(),
+                catalog.getName(),
+                catalog.getDescription()
         );
     }
 }

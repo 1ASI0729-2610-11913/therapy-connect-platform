@@ -1,38 +1,49 @@
 package com.open.therapyconnect.platform.marketplace.domain.model.aggregates;
 
 import com.open.therapyconnect.platform.marketplace.domain.model.commands.CreateProductCommand;
-import com.open.therapyconnect.platform.marketplace.domain.model.valueobjects.*;
 import com.open.therapyconnect.platform.shared.domain.model.aggregates.AbstractDomainAggregateRoot;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.util.Strings;
 
+/**
+ * Product aggregate root.
+ */
 @Getter
-@Setter
-public class Product extends AbstractDomainAggregateRoot {
-    private Long id;
-    private String productName;
-    private String productCategory;
-    private String productType;
-    private AvailabilityStates availabilityState;
-    private Number availableQuantity;
-    private RecommendationStates recommendationState;
-    private Priority priority;
-    private String expirationDate;
-    private String groupType;
-    private Double price;
+public class Product extends AbstractDomainAggregateRoot<Product> {
 
-    public Product() {}
+    @Setter private Long id;
+    @Setter private Long catalogId;
+    @Setter private String name;
+    @Setter private String description;
+    @Setter private Double price;
+    @Setter private String imageUrl;
+    @Setter private String recommendedFor;
+
+    public Product() {
+        this.name = Strings.EMPTY;
+        this.description = Strings.EMPTY;
+        this.price = 0.0;
+        this.imageUrl = Strings.EMPTY;
+        this.recommendedFor = Strings.EMPTY;
+    }
 
     public Product(CreateProductCommand command) {
-        this.productName = command.productName();
-        this.productCategory = command.productCategory();
-        this.productType = command.productType();
-        this.availabilityState = AvailabilityStates.valueOf(command.availabilityState());
-        this.availableQuantity = command.availableQuantity();
-        this.recommendationState = RecommendationStates.valueOf(command.recommendationState());
-        this.priority = Priority.valueOf(command.priority());
-        this.expirationDate = command.expirationDate();
-        this.groupType = command.groupType();
+        this.catalogId = command.catalogId();
+        this.name = command.name();
+        this.description = command.description();
         this.price = command.price();
+        this.imageUrl = command.imageUrl();
+        this.recommendedFor = command.recommendedFor();
+    }
+
+    public Product updateInformation(String name, String description, Double price,
+                                     String imageUrl, String recommendedFor) {
+        if (name != null) this.name = name;
+        if (description != null) this.description = description;
+        if (price != null) this.price = price;
+        if (imageUrl != null) this.imageUrl = imageUrl;
+        if (recommendedFor != null) this.recommendedFor = recommendedFor;
+        return this;
     }
 }

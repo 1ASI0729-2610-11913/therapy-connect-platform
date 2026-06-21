@@ -4,12 +4,11 @@ import com.open.therapyconnect.platform.marketplace.domain.model.commands.Create
 import com.open.therapyconnect.platform.marketplace.interfaces.rest.resources.CreateCatalogResource;
 
 public class CreateCatalogCommandFromResourceAssembler {
+
     public static CreateCatalogCommand toCommandFromResource(CreateCatalogResource resource) {
         return new CreateCatalogCommand(
-                resource.catalogName(),
-                resource.productId(),
-                resource.catalogState(),
-                resource.dateUpdated()
+                resource.name(),
+                resource.description()
         );
     }
 }

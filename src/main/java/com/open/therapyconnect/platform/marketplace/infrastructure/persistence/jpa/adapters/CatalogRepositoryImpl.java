@@ -6,30 +6,45 @@ import com.open.therapyconnect.platform.marketplace.infrastructure.persistence.j
 import com.open.therapyconnect.platform.marketplace.infrastructure.persistence.jpa.repositories.CatalogPersistenceRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class CatalogRepositoryImpl implements CatalogRepository {
+
     private final CatalogPersistenceRepository catalogPersistenceRepository;
+
     public CatalogRepositoryImpl(CatalogPersistenceRepository catalogPersistenceRepository) {
         this.catalogPersistenceRepository = catalogPersistenceRepository;
     }
 
     @Override
-    public Catalog save(Catalog catalog) {
-        var persistenceSaved = this.catalogPersistenceRepository
-                .save(CatalogPersistenceAssembler.toPersistenceFromDomain(catalog));
-        return CatalogPersistenceAssembler.toDomainFromPersistence(persistenceSaved);
-    }
-
-    @Override
     public Optional<Catalog> findById(Long id) {
-        var persistence = this.catalogPersistenceRepository.findById(id);
-        return Optional.of(CatalogPersistenceAssembler.toDomainFromPersistence(persistence.get()));
+        return catalogPersistenceRepository.findById(id)
+                .map(CatalogPersistenceAssembler::toDomainFromPersistence);
     }
 
     @Override
-    public boolean existsByCatalogName(String name) {
-        return this.catalogPersistenceRepository.existsByCatalogName(name);
+    public List<Catalog> findAll() {
+        return catalogPersistenceRepository.findAll().stream()
+                .map(CatalogPersistenceAssembler::toDomainFromPersistence)
+                .toList();
+    }
+
+    @Override
+    public Catalog save(Catalog catalog) {
+        var saved = catalogPersistenceRepository.save(
+                CatalogPersistenceAssembler.toPersistenceFromDomain(catalog));
+        return CatalogPersistenceAssembler.toDomainFromPersistence(saved);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return catalogPersistenceRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        catalogPersistenceRepository.deleteById(id);
     }
 }

@@ -5,8 +5,11 @@ import com.open.therapyconnect.platform.marketplace.domain.model.aggregates.Cata
 import java.util.List;
 import java.util.Optional;
 
+/** Catalog repository port. */
 public interface CatalogRepository {
-    Catalog save(Catalog catalog);
     Optional<Catalog> findById(Long id);
-    boolean existsByCatalogName(String name);
+    List<Catalog> findAll();
+    Catalog save(Catalog catalog);
+    boolean existsById(Long id);
+    void deleteById(Long id);
 }

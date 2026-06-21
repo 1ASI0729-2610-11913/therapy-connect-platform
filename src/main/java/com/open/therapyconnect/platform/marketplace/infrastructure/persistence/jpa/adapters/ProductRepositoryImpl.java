@@ -6,30 +6,45 @@ import com.open.therapyconnect.platform.marketplace.infrastructure.persistence.j
 import com.open.therapyconnect.platform.marketplace.infrastructure.persistence.jpa.repositories.ProductPersistenceRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
+
     private final ProductPersistenceRepository productPersistenceRepository;
+
     public ProductRepositoryImpl(ProductPersistenceRepository productPersistenceRepository) {
         this.productPersistenceRepository = productPersistenceRepository;
     }
 
     @Override
-    public Product save(Product product) {
-        var persistenceSaved = this.productPersistenceRepository
-                .save(ProductPersistenceAssembler.toPersistenceFromDomain(product));
-        return ProductPersistenceAssembler.toDomainFromPersistence(persistenceSaved);
-    }
-
-    @Override
     public Optional<Product> findById(Long id) {
-        var persistence = this.productPersistenceRepository.findById(id);
-        return Optional.of(ProductPersistenceAssembler.toDomainFromPersistence(persistence.get()));
+        return productPersistenceRepository.findById(id)
+                .map(ProductPersistenceAssembler::toDomainFromPersistence);
     }
 
     @Override
-    public boolean existsByProductName(String name) {
-        return this.productPersistenceRepository.existsByProductName(name);
+    public List<Product> findAll() {
+        return productPersistenceRepository.findAll().stream()
+                .map(ProductPersistenceAssembler::toDomainFromPersistence)
+                .toList();
+    }
+
+    @Override
+    public Product save(Product product) {
+        var saved = productPersistenceRepository.save(
+                ProductPersistenceAssembler.toPersistenceFromDomain(product));
+        return ProductPersistenceAssembler.toDomainFromPersistence(saved);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return productPersistenceRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        productPersistenceRepository.deleteById(id);
     }
 }
