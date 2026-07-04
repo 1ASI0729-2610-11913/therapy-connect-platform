@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "dependents")
+@Entity(name = "ProfileDependentPersistenceEntity")
+@Table(name = "profile_dependents")
 @Getter
 @Setter
 @NoArgsConstructor

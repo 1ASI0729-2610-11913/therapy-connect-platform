@@ -6,6 +6,7 @@ import com.open.therapyconnect.platform.marketplace.infrastructure.persistence.j
 import com.open.therapyconnect.platform.marketplace.infrastructure.persistence.jpa.repositories.DependentPersistenceRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,12 +25,29 @@ public class DependentRepositoryImpl implements DependentRepository {
 
     @Override
     public Optional<Dependent> findById(Long id) {
-        var persistence = this.dependentPersistenceRepository.findById(id);
-        return Optional.of(DependentPersistenceAssembler.toDomainFromPersistence(persistence.get()));
+        return this.dependentPersistenceRepository.findById(id)
+                .map(DependentPersistenceAssembler::toDomainFromPersistence);
+    }
+
+    @Override
+    public List<Dependent> findAll() {
+        return this.dependentPersistenceRepository.findAll().stream()
+                .map(DependentPersistenceAssembler::toDomainFromPersistence)
+                .toList();
     }
 
     @Override
     public boolean existsByDependentName(String name) {
         return this.dependentPersistenceRepository.existsByDependentName(name);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return this.dependentPersistenceRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        this.dependentPersistenceRepository.deleteById(id);
     }
 }

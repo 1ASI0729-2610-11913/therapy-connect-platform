@@ -1,6 +1,7 @@
 package com.open.therapyconnect.platform.sessionandlive.infrastructure.persistence.jpa.adapters;
 
 import com.open.therapyconnect.platform.sessionandlive.domain.model.aggregates.LiveSession;
+import com.open.therapyconnect.platform.sessionandlive.domain.model.valueobjects.SessionMode;
 import com.open.therapyconnect.platform.sessionandlive.domain.repositories.LiveSessionRepository;
 import com.open.therapyconnect.platform.sessionandlive.infrastructure.persistence.jpa.assemblers.LiveSessionPersistenceAssembler;
 import com.open.therapyconnect.platform.sessionandlive.infrastructure.persistence.jpa.repositories.LiveSessionPersistenceRepository;
@@ -41,6 +42,13 @@ public class LiveSessionRepositoryImpl implements LiveSessionRepository {
     @Override
     public List<LiveSession> findByStudentId(Long studentId) {
         return persistenceRepository.findByStudentId(studentId).stream()
+                .map(LiveSessionPersistenceAssembler::toDomainFromPersistence)
+                .toList();
+    }
+
+    @Override
+    public List<LiveSession> findBySessionMode(SessionMode sessionMode) {
+        return persistenceRepository.findBySessionMode(sessionMode).stream()
                 .map(LiveSessionPersistenceAssembler::toDomainFromPersistence)
                 .toList();
     }

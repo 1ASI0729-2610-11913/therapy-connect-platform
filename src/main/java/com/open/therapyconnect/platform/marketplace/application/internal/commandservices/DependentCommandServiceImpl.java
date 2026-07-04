@@ -2,7 +2,7 @@ package com.open.therapyconnect.platform.marketplace.application.internal.comman
 
 import com.open.therapyconnect.platform.marketplace.application.commandservices.DependentCommandService;
 import com.open.therapyconnect.platform.marketplace.domain.model.aggregates.Dependent;
-import com.open.therapyconnect.platform.marketplace.domain.model.commands.CreateDependentCommand;
+import com.open.therapyconnect.platform.marketplace.domain.model.commands.*;
 import com.open.therapyconnect.platform.marketplace.domain.repositories.DependentRepository;
 import com.open.therapyconnect.platform.shared.application.result.ApplicationError;
 import com.open.therapyconnect.platform.shared.application.result.Result;
@@ -17,7 +17,7 @@ public class DependentCommandServiceImpl implements DependentCommandService {
 
     @Override
     public Result<Long, ApplicationError> handle(CreateDependentCommand command) {
-        if (this.dependentRepository.existsByDependentName(command.dependentName())) {
+        if (command.dependentName() != null && this.dependentRepository.existsByDependentName(command.dependentName())) {
             return Result.failure(
                     ApplicationError.conflict("Dependent", "No se permite registrar el dependiente ya existente")
             );
@@ -29,5 +29,38 @@ public class DependentCommandServiceImpl implements DependentCommandService {
             return Result.failure(ApplicationError.unexpected("create-dependent", e.getMessage()));
         }
         return Result.success(dependent.getId());
+    }
+
+    @Override
+    public Result<Dependent, ApplicationError> handle(UpdateDependentCommand command) {
+        var result = dependentRepository.findById(command.dependentId());
+        if (result.isEmpty())
+            return Result.failure(ApplicationError.notFound("Dependent", command.dependentId().toString()));
+        var dependentToUpdate = result.get();
+        try {
+            var updatedDependent = dependentRepository.save(
+                    dependentToUpdate.updateInformation(
+                            command.dependentName(),
+                            command.dependentCondition(),
+                            command.needLevel(),
+                            command.progressState()
+                    )
+            );
+            return Result.success(updatedDependent);
+        } catch (Exception e) {
+            return Result.failure(ApplicationError.unexpected("update-dependent", e.getMessage()));
+        }
+    }
+
+    @Override
+    public Result<Long, ApplicationError> handle(DeleteDependentCommand command) {
+        if (!dependentRepository.existsById(command.dependentId()))
+            return Result.failure(ApplicationError.notFound("Dependent", command.dependentId().toString()));
+        try {
+            dependentRepository.deleteById(command.dependentId());
+            return Result.success(command.dependentId());
+        } catch (Exception e) {
+            return Result.failure(ApplicationError.unexpected("delete-dependent", e.getMessage()));
+        }
     }
 }

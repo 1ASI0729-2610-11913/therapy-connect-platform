@@ -21,6 +21,15 @@ public class Dependent extends AbstractDomainAggregateRoot {
         this.dependentName = command.dependentName();
         this.dependentCondition = command.dependentCondition();
         this.needLevel = command.needLevel();
-        this.progressState = ProgressStates.valueOf(command.progressState());
+        this.progressState = ProgressStates.fromString(command.progressState());
+    }
+
+    public Dependent updateInformation(String dependentName, String dependentCondition, String needLevel,
+                                       String progressState) {
+        if (dependentName != null) this.dependentName = dependentName;
+        if (dependentCondition != null) this.dependentCondition = dependentCondition;
+        if (needLevel != null) this.needLevel = needLevel;
+        if (progressState != null) this.progressState = ProgressStates.fromString(progressState);
+        return this;
     }
 }

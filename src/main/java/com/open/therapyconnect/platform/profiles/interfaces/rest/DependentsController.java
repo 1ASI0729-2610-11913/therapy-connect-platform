@@ -21,9 +21,9 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RestController
-@RequestMapping(value = "/api/v1/dependents", produces = APPLICATION_JSON_VALUE)
-@Tag(name = "Dependents", description = "Dependent management endpoints")
+@RestController("profileDependentsController")
+@RequestMapping(value = "/api/v1/profile-dependents", produces = APPLICATION_JSON_VALUE)
+@Tag(name = "Profile Dependents", description = "Profile dependent management endpoints")
 public class DependentsController {
 
     private final DependentCommandService dependentCommandService;

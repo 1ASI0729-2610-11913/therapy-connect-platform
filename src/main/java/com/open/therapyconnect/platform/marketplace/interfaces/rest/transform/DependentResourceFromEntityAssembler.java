@@ -10,6 +10,7 @@ public class DependentResourceFromEntityAssembler {
                 entity.getDependentName(),
                 entity.getDependentCondition(),
                 entity.getNeedLevel(),
+                entity.getProgressState().name(),
                 entity.getProgressState().name()
         );
     }

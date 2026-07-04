@@ -8,7 +8,7 @@ import com.open.therapyconnect.platform.shared.application.result.ApplicationErr
 import com.open.therapyconnect.platform.shared.application.result.Result;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("profileDependentCommandServiceImpl")
 public class DependentCommandServiceImpl implements DependentCommandService {
 
     private final DependentRepository dependentRepository;
