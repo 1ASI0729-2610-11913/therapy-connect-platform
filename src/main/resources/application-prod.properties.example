@@ -1,0 +1,20 @@
+# Production profile — set these as environment variables in your deployment platform (e.g. Render)
+# DB_URL=jdbc:postgresql://YOUR_DB_HOST:5432/therapyconnect_db
+# DB_USERNAME=YOUR_DB_USERNAME
+# DB_PASSWORD=YOUR_DB_PASSWORD
+# JWT_SECRET=YOUR_SECURE_JWT_SECRET
+# PORT=8080
+
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
+spring.jpa.show-sql=false
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.open-in-view=false
+
+server.port=${PORT:8080}
+
+# JWT (IAM bounded context)
+authorization.jwt.secret=${JWT_SECRET}
+authorization.jwt.expiration.days=7

@@ -34,3 +34,7 @@ build/
 
 ### Claude Code ###
 .claude/
+
+### Sensitive configuration — use .example files as reference ###
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
