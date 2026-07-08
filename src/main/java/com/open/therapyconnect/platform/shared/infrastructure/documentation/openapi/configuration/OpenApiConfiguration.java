@@ -61,6 +61,9 @@ public class OpenApiConfiguration {
         // Add server configurations
         openApi.servers(List.of(
                 new Server()
+                        .url("https://therapy-connect-platform.onrender.com")
+                        .description("Production Environment - Render"),
+                new Server()
                         .url("http://localhost:8080")
                         .description("Local Development Environment")
         ));

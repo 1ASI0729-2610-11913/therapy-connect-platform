@@ -11,4 +11,5 @@ public interface LiveSessionQueryService {
     List<LiveSession> handle(GetAllLiveSessionsQuery query);
     List<LiveSession> handle(GetLiveSessionsByTeacherIdQuery query);
     List<LiveSession> handle(GetLiveSessionsByStudentIdQuery query);
+    List<LiveSession> handle(GetLiveSessionsByModeQuery query);
 }

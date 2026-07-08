@@ -1,24 +1,27 @@
-package com.open.therapyconnect.platform.profiles.application.internal.commandservices;
+package com.open.therapyconnect.platform.marketplace.application.internal.commandservices;
 
-import com.open.therapyconnect.platform.profiles.application.commandservices.DependentCommandService;
-import com.open.therapyconnect.platform.profiles.domain.model.aggregates.Dependent;
-import com.open.therapyconnect.platform.profiles.domain.model.commands.*;
-import com.open.therapyconnect.platform.profiles.domain.repositories.DependentRepository;
+import com.open.therapyconnect.platform.marketplace.application.commandservices.DependentCommandService;
+import com.open.therapyconnect.platform.marketplace.domain.model.aggregates.Dependent;
+import com.open.therapyconnect.platform.marketplace.domain.model.commands.*;
+import com.open.therapyconnect.platform.marketplace.domain.repositories.DependentRepository;
 import com.open.therapyconnect.platform.shared.application.result.ApplicationError;
 import com.open.therapyconnect.platform.shared.application.result.Result;
 import org.springframework.stereotype.Service;
 
-@Service("profileDependentCommandServiceImpl")
+@Service
 public class DependentCommandServiceImpl implements DependentCommandService {
-
-    private final DependentRepository dependentRepository;
-
+    private DependentRepository dependentRepository;
     public DependentCommandServiceImpl(DependentRepository dependentRepository) {
         this.dependentRepository = dependentRepository;
     }
 
     @Override
     public Result<Long, ApplicationError> handle(CreateDependentCommand command) {
+        if (command.dependentName() != null && this.dependentRepository.existsByDependentName(command.dependentName())) {
+            return Result.failure(
+                    ApplicationError.conflict("Dependent", "No se permite registrar el dependiente ya existente")
+            );
+        }
         var dependent = new Dependent(command);
         try {
             dependent = dependentRepository.save(dependent);
@@ -36,7 +39,12 @@ public class DependentCommandServiceImpl implements DependentCommandService {
         var dependentToUpdate = result.get();
         try {
             var updatedDependent = dependentRepository.save(
-                    dependentToUpdate.updateInformation(command.name(), command.age(), command.condition())
+                    dependentToUpdate.updateInformation(
+                            command.dependentName(),
+                            command.dependentCondition(),
+                            command.needLevel(),
+                            command.progressState()
+                    )
             );
             return Result.success(updatedDependent);
         } catch (Exception e) {

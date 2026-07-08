@@ -61,9 +61,15 @@ public class LiveSessionsController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all live sessions")
-    public ResponseEntity<List<LiveSessionResource>> getAllLiveSessions() {
-        var sessions = liveSessionQueryService.handle(new GetAllLiveSessionsQuery());
+    @Operation(summary = "Get all live sessions, optionally filtered by mode (GROUP, PRIVATE, LIVE)")
+    public ResponseEntity<List<LiveSessionResource>> getAllLiveSessions(
+            @RequestParam(required = false) String mode) {
+        List<com.open.therapyconnect.platform.sessionandlive.domain.model.aggregates.LiveSession> sessions;
+        if (mode != null && !mode.isBlank()) {
+            sessions = liveSessionQueryService.handle(new GetLiveSessionsByModeQuery(mode));
+        } else {
+            sessions = liveSessionQueryService.handle(new GetAllLiveSessionsQuery());
+        }
         var resources = sessions.stream()
                 .map(LiveSessionResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
